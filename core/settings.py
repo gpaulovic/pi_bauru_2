@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'descartadores',
     'descartes',
     'ecopontos',
+    'usuarios',
 ]
 
 MIDDLEWARE = [
