@@ -55,3 +55,7 @@ class DescartesTests(TestCase):
         response = self.client.delete(reverse('descartes:delete-descartes', kwargs={'id': self.descarte.pk}))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(Descartes.objects.filter(pk=self.descarte.pk).exists())
+
+    def test_consultar_descartes(self):
+        response = self.client.get(reverse('descartes:consultar-descartes'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)

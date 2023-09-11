@@ -42,3 +42,9 @@ def delete(request, id):
     
     descarte.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+def consultar_descartes(request):
+    descartes = Descartes.objects.all()
+    serializer = DescartesSerializer(descartes, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
