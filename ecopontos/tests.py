@@ -9,6 +9,7 @@ class EcopontosTests(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.ecopontos_data = {
+            'nome': 'Nome do Ecoponto',
             'cep': 'CEP Teste',
             'bairro': 'Bairro Teste',
             'endereco': 'Endereço Teste',
@@ -25,8 +26,6 @@ class EcopontosTests(TestCase):
 
     def test_create_ecoponto(self):
         response = self.client.post(reverse('ecopontos:create-ecopontos'), self.ecopontos_data, format='json')
-        #print("Create Ecoponto Response:", response.content.decode())  # Exibir a resposta da requisição
-        #print("Status Code:", response.status_code)  # Exibir o código de status da resposta
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_retrieve_ecoponto(self):
@@ -38,17 +37,16 @@ class EcopontosTests(TestCase):
 
     def test_update_ecoponto(self):
         updated_data = {
+            'nome': 'Novo Nome do Ecoponto',
             'cep': 'Novo CEP',
             'bairro': 'Novo Bairro',
             'endereco': 'Novo Endereço',
-            'situacao': 'Nova Situa',
+            'situacao': 'NovaSituaç',
         }
-        response = self.client.put(reverse('ecopontos:update-ecopontos', kwargs={'pk': self.ecopontos.id}), updated_data, format='json')
-        #print("Update Ecoponto Response:", response.content.decode())  # Exibir a resposta da requisição
-        #print("Status Code:", response.status_code)  # Exibir o código de status da resposta
+        response = self.client.put(reverse('ecopontos:detail-ecopontos', kwargs={'pk': self.ecopontos.pk}), updated_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_delete_ecoponto(self):
-        response = self.client.delete(reverse('ecopontos:update-ecopontos', kwargs={'pk': self.ecopontos.id}))
+        response = self.client.delete(reverse('ecopontos:detail-ecopontos', kwargs={'pk': self.ecopontos.pk}))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertFalse(Ecopontos.objects.filter(pk=self.ecopontos.pk).exists())

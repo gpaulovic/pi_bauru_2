@@ -2,13 +2,17 @@ from rest_framework.test import APITestCase
 from django.urls import reverse
 from rest_framework import status
 from .models import Usuarios
-from ecopontos.models import Ecopontos  # Importe o modelo Ecopontos
+from ecopontos.models import Ecopontos
 
 class UsuariosTests(APITestCase):
     def setUp(self):
         self.ecoponto = Ecopontos.objects.create(nome='Ecoponto Teste')
         self.usuario_data = {
-            'ecoponto': self.ecoponto.id,  # Use o ID do objeto Ecopontos criado acima
+            'nome': 'Usuário de Teste',
+            'cpf': '12345678901',
+            'email': 'usuario@teste.com',
+            'cargo': 'Analista',
+            'ecoponto': self.ecoponto,
         }
         self.usuario = Usuarios.objects.create(**self.usuario_data)
         self.url = reverse('usuarios-list')
@@ -23,7 +27,7 @@ class UsuariosTests(APITestCase):
             'cpf': '98765432109',
             'email': 'novo_usuario@example.com',
             'cargo': 'Gerente',
-            'ecoponto': self.ecoponto.id,  # Use o ID do objeto Ecopontos criado acima
+            'ecoponto': self.ecoponto.id,
         }
         response = self.client.post(self.url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
@@ -40,7 +44,7 @@ class UsuariosTests(APITestCase):
             'cpf': '12345678901',
             'email': 'usuario@example.com',
             'cargo': 'Analista Sênior',
-            'ecoponto': self.ecoponto.id,  # Use o ID do objeto Ecopontos criado acima
+            'ecoponto': self.ecoponto.id,
         }
         response = self.client.put(url, data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -49,4 +53,3 @@ class UsuariosTests(APITestCase):
         url = reverse('usuarios-detail', args=[self.usuario.id])
         response = self.client.delete(url)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-
